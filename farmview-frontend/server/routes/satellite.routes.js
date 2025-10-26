@@ -24,9 +24,9 @@ router.get('/property/:propertyId', protect, async (req, res) => {
     // Calculate bounding box from property coordinates
     const bbox = sentinelService.calculateBoundingBox(property.location.coordinates);
 
-    // Get dates (last 30 days)
-    const toDate = new Date().toISOString().split('T')[0];
-    const fromDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    // Get dates in ISO-8601 format (required by Sentinel Hub)
+    const toDate = new Date().toISOString();
+    const fromDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     // Fetch satellite image
     const imageData = await sentinelService.getSatelliteImage({
@@ -87,9 +87,9 @@ router.get('/ndvi/:propertyId', protect, async (req, res) => {
     // Calculate bounding box
     const bbox = sentinelService.calculateBoundingBox(property.location.coordinates);
 
-    // Get dates
-    const toDate = new Date().toISOString().split('T')[0];
-    const fromDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    // Get dates in ISO-8601 format (required by Sentinel Hub)
+    const toDate = new Date().toISOString();
+    const fromDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     // Fetch NDVI data
     const ndviData = await sentinelService.getNDVI({
@@ -152,8 +152,8 @@ router.post('/custom-image', protect, async (req, res) => {
 
     const imageData = await sentinelService.getSatelliteImage({
       bbox,
-      fromDate: fromDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      toDate: toDate || new Date().toISOString().split('T')[0],
+      fromDate: fromDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      toDate: toDate || new Date().toISOString(),
       width: width || 512,
       height: height || 512
     });
