@@ -1,15 +1,15 @@
-# 🌾 FarmView AI - Satellite-Based Crop Damage Assessment
+# 🌾 FarmView AI - Smart Agriculture Platform
 
 <div align="center">
 
 ![FarmView AI Logo](https://img.shields.io/badge/FarmView-AI-2ecc71?style=for-the-badge&logo=satellite&logoColor=white)
 
-**Automated crop damage assessment using satellite imagery and NDVI analysis**
+**AI-powered crop monitoring, weather prediction, and insurance management for farmers**
 
-[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-20.19+-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18.2+-61DAFB?style=flat&logo=react&logoColor=black)](https://reactjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Sentinel Hub](https://img.shields.io/badge/Sentinel-Hub-0072C6?style=flat&logo=satellite&logoColor=white)](https://www.sentinel-hub.com/)
+[![Express](https://img.shields.io/badge/Express-4.21+-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com/)
 
 </div>
 
@@ -17,48 +17,57 @@
 
 ## 🎯 Overview
 
-**FarmView AI** is a cutting-edge geospatial platform that enables farmers and insurance companies to assess crop damage automatically using satellite imagery. The system leverages **Normalized Difference Vegetation Index (NDVI)** analysis to detect crop health changes and generate comprehensive damage reports within seconds.
+**FarmView AI** is a comprehensive agricultural management platform that helps farmers monitor their properties, predict crop damage using ML weather analysis, manage insurance policies, and handle document storage. The system provides real-time weather monitoring with automated risk assessments every 6 hours.
 
 ### Key Features
 
-- 🛰️ **Automated Satellite Imagery**: Fetches multi-spectral data from Sentinel Hub
-- 📊 **NDVI Analysis**: Calculates vegetation health using NIR and RED bands
-- 🗺️ **Interactive Mapping**: Draw farm boundaries using Leaflet.js
-- 📄 **PDF Reports**: Auto-generated professional damage assessment reports
-- 💰 **Claim Estimation**: Instant insurance claim amount calculation
-- 🔗 **FinTech Integration**: Webhook support for insurance APIs
-- 📈 **Damage Heatmaps**: Visual representation of crop damage severity
+- �️ **Interactive Property Mapping**: Draw farm boundaries using Leaflet.js with satellite/street/hybrid views
+- 🌦️ **Weather Integration**: Real-time weather data from OpenWeatherMap API
+- 🤖 **ML Crop Prediction**: Automated risk assessment analyzing 6 factors (waterlogging, drought, heat stress, cold stress, disease, wind damage)
+- � **Document Management**: Upload/download property documents using GridFS
+- � **Insurance Policies**: Manage crop insurance policies and claims
+- � **Automated Alerts**: Cron job running every 6 hours for weather-based risk monitoring
+- � **Secure Authentication**: JWT-based authentication with farmer profiles
+- � **Property Dashboard**: View all properties with area, crop, soil type, and verification status
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐
-│   Frontend      │  Leaflet.js + Bootstrap
-│   Dashboard     │  (Interactive Map Drawing)
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   FastAPI       │  Python Backend
-│   Backend       │  (REST API)
-└────────┬────────┘
-         │
-    ┌────┴────┬──────────┬─────────────┐
-    ▼         ▼          ▼             ▼
-┌────────┐ ┌─────┐  ┌──────┐    ┌──────────┐
-│Sentinel│ │NDVI │  │Viz   │    │Insurance │
-│Hub API │ │Proc │  │Engine│    │API       │
-└────────┘ └─────┘  └──────┘    └──────────┘
-    │         │          │             │
-    └─────────┴──────────┴─────────────┘
-                   │
-                   ▼
-            ┌──────────┐
-            │ MongoDB  │
-            │ Atlas    │
-            └──────────┘
+┌─────────────────────────────────────┐
+│   React Frontend (Vite)             │
+│   - Leaflet Maps + Drawing          │
+│   - Property/Weather/Insurance UI   │
+│   Port: 5173                        │
+└────────────┬────────────────────────┘
+             │ Axios API Calls
+             ▼
+┌─────────────────────────────────────┐
+│   Express.js Backend                │
+│   - REST API                        │
+│   - JWT Auth Middleware             │
+│   Port: 5000                        │
+└────────────┬────────────────────────┘
+             │
+    ┌────────┴────────┬──────────────┬─────────────┐
+    ▼                 ▼              ▼             ▼
+┌─────────┐    ┌──────────┐   ┌──────────┐  ┌──────────┐
+│OpenWeather│  │GridFS    │   │ML Crop   │  │Cron Jobs │
+│Map API   │   │Documents │   │Prediction│  │(6 hours) │
+└─────────┘    └──────────┘   └──────────┘  └──────────┘
+                      │              │             │
+                      └──────────────┴─────────────┘
+                                 │
+                                 ▼
+                         ┌──────────────┐
+                         │ MongoDB Atlas│
+                         │ - farmers    │
+                         │ - properties │
+                         │ - insurance  │
+                         │ - alerts     │
+                         │ - documents  │
+                         └──────────────┘
 ```
 
 ---
@@ -67,55 +76,62 @@
 
 ### Prerequisites
 
-- Python 3.9+
+- Node.js 20.19+ and npm
 - MongoDB Atlas account (or local MongoDB)
-- Sentinel Hub API credentials ([Sign up here](https://www.sentinel-hub.com/))
+- OpenWeatherMap API key ([Get free key](https://openweathermap.org/api))
 - Git
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   cd /home/bishnups/Documents/SSPU-HACK
-   git init
+   git clone https://github.com/mebishnusahu0595/SSPU-HACK.git
+   cd SSPU-HACK
    ```
 
-2. **Create virtual environment**
+2. **Backend Setup**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   cd farmview-frontend/server
+   npm install
    ```
 
-3. **Install dependencies**
+3. **Configure environment variables**
    ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure environment variables**
-   ```bash
-   cp .env.example .env
-   nano .env  # Edit with your credentials
+   # Create .env file in server directory
+   nano .env
    ```
 
    Required configurations:
-   - `SENTINEL_CLIENT_ID`: Your Sentinel Hub OAuth client ID
-   - `SENTINEL_CLIENT_SECRET`: Your Sentinel Hub OAuth client secret
-   - `MONGODB_URI`: MongoDB connection string
-   - `JWT_SECRET_KEY`: Secret key for JWT authentication
-
-5. **Create necessary directories**
-   ```bash
-   mkdir -p temp reports static
+   ```env
+   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/farmview_ai?retryWrites=true&w=majority
+   JWT_SECRET=your_secret_key_here
+   WEATHER_API_KEY=your_openweathermap_api_key
+   PORT=5000
+   NODE_ENV=development
    ```
 
-6. **Run the application**
+4. **Frontend Setup**
    ```bash
-   python main.py
+   cd ../client
+   npm install
    ```
 
-   The API will be available at: `http://localhost:8000`
-   
-   Frontend dashboard: `http://localhost:8000/static/index.html`
+5. **Run the application**
+
+   **Terminal 1 - Backend:**
+   ```bash
+   cd farmview-frontend/server
+   npm start
+   ```
+
+   **Terminal 2 - Frontend:**
+   ```bash
+   cd farmview-frontend/client
+   npm run dev
+   ```
+
+   - Backend API: `http://localhost:5000`
+   - Frontend UI: `http://localhost:5173`
 
 ---
 
@@ -123,165 +139,395 @@
 
 ### Step-by-Step Workflow
 
-#### 1️⃣ Open Dashboard
-Navigate to `http://localhost:8000/static/index.html`
+#### 1️⃣ Register/Login
+- Navigate to `http://localhost:5173`
+- Sign up with name, email, phone, and password
+- Auto-generated Farmer ID (format: FV2025XXXXXX)
+- Login with email and password
 
-#### 2️⃣ Mark Farm Boundary
-- Click the **polygon tool** (▢) on the map
-- Click points to mark your farm boundary
-- Double-click to complete the polygon
+#### 2️⃣ Add Property
+- Go to **Property** page
+- Search address using geocoding (Nominatim API)
+- Switch map view: Street/Satellite/Hybrid
+- Draw field boundary using polygon/rectangle tools
+- Fill details:
+  - Property Name
+  - Current Crop (wheat, rice, sugarcane, etc.)
+  - Soil Type (Alluvial, Black, Red, Laterite, Desert, Mountain)
+  - Irrigation Type (Rainfed, Drip, Sprinkler, Flood, Mixed)
+- Upload property documents (PDF/images, max 5 files)
+- Click **Create Property**
 
-#### 3️⃣ Fill Field Details
-- **Farmer ID**: Unique identifier (e.g., FARM001)
-- **Crop Type**: Select from dropdown (Rice, Wheat, etc.)
-- **Event Date**: Date of damage event (optional)
-- **Insured Amount**: For claim estimation (optional)
+#### 3️⃣ Weather & ML Prediction
+- System automatically fetches weather on property creation
+- Go to **Weather** page
+- Select property from dropdown
+- View current weather conditions
+- Click **Trigger ML Prediction** for risk assessment
+- ML analyzes 6 risk factors:
+  - Waterlogging risk
+  - Drought stress
+  - Heat stress
+  - Cold/frost damage
+  - Disease risk
+  - Wind damage
 
-#### 4️⃣ Analyze Field
-Click **"🛰️ Analyze Field & Generate Report"**
+#### 4️⃣ Manage Insurance
+- Go to **Insurance** page
+- Create new policy with:
+  - Policy number
+  - Insurance provider
+  - Premium amount
+  - Coverage amount
+  - Start/end dates
+- Link to existing properties
+- View all active policies
 
-The system will:
-1. Fetch current and historical satellite imagery
-2. Calculate NDVI for both periods
-3. Detect damage using threshold analysis
-4. Generate damage heatmaps
-5. Create PDF report
-6. Send to insurance API (if configured)
-
-#### 5️⃣ View Results
-- **Damage Percentage**: % of crop damaged
-- **Risk Score**: 0-10 scale severity rating
-- **Area Statistics**: Total and damaged area in hectares
-- **Estimated Claim**: Insurance claim amount (if insured)
-- **Download Report**: PDF with full analysis
-- **Interactive Map**: Folium-based visualization
+#### 5️⃣ Document Management
+- Go to **Documents** page
+- Upload property-related documents
+- Download previously uploaded files
+- Organized by property
 
 ---
 
 ## 🛠️ API Documentation
 
-### Endpoints
+### Authentication Endpoints
 
-#### `POST /api/register-field`
-Register a new field for monitoring.
+#### `POST /api/auth/signup`
+Register a new farmer.
 
 **Request Body:**
 ```json
 {
-  "farmer_id": "FARM001",
-  "crop": "Rice",
-  "coordinates": [
-    [81.6542, 21.2234],
-    [81.6555, 21.2241],
-    [81.6571, 21.2237],
-    [81.6560, 21.2229]
-  ],
-  "insured_amount": 500000
+  "name": "Ramesh Kumar",
+  "email": "ramesh@example.com",
+  "phone": "9876543210",
+  "password": "securePassword123"
 }
 ```
 
 **Response:**
 ```json
 {
-  "message": "Field registered successfully",
-  "field_id": "507f1f77bcf86cd799439011",
-  "area_hectares": "2.73"
+  "message": "Farmer registered successfully",
+  "farmerId": "FV2025000001",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
 ---
 
-#### `POST /api/analyze-field`
-Perform complete NDVI analysis and damage assessment.
+#### `POST /api/auth/login`
+Login with email and password.
 
-**Request Body:** (Same as register-field)
+**Request Body:**
+```json
+{
+  "email": "ramesh@example.com",
+  "password": "securePassword123"
+}
+```
 
 **Response:**
 ```json
 {
-  "analysis_id": "507f1f77bcf86cd799439012",
-  "farmer_id": "FARM001",
-  "damage_percent": 74.3,
-  "risk_score": 8.5,
-  "area_hectares": 2.73,
-  "damaged_area_hectares": 2.03,
-  "timestamp": "2025-10-26T10:30:00Z",
-  "report_url": "/reports/report_FARM001_1698321000.pdf",
-  "map_url": "/static/map_FARM001_1698321000.html",
-  "estimated_claim": 371500
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "farmer": {
+    "_id": "507f1f77bcf86cd799439011",
+    "farmerId": "FV2025000001",
+    "name": "Ramesh Kumar",
+    "email": "ramesh@example.com"
+  }
 }
 ```
 
 ---
 
-#### `GET /api/field/{farmer_id}`
-Get field information by farmer ID.
+### Property Endpoints
+
+#### `POST /api/property`
+Create a new property with documents.
+
+**Request:** multipart/form-data
+- `propertyName`: string
+- `currentCrop`: string
+- `soilType`: enum (Alluvial, Black, Red, etc.)
+- `irrigationType`: enum (Rainfed, Drip, etc.)
+- `coordinates`: JSON string (GeoJSON polygon)
+- `area`: number (hectares)
+- `areaUnit`: string
+- `latitude`: number
+- `longitude`: number
+- `address`: JSON string
+- `documents`: files (max 5)
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Property created successfully",
+  "property": {
+    "_id": "507f1f77bcf86cd799439012",
+    "propertyName": "my_wheat_property",
+    "area": { "value": 1.3, "unit": "hectares" },
+    "currentCrop": "wheat",
+    "weatherData": { "temp": 28, "humidity": 65 },
+    "riskAssessment": {
+      "waterloggingRisk": 2.1,
+      "overallRisk": 4.5
+    }
+  }
+}
+```
 
 ---
 
-#### `GET /api/analyses/{farmer_id}`
-Get all analyses for a specific field.
+#### `GET /api/property`
+Get all properties for logged-in farmer.
+
+**Response:**
+```json
+{
+  "success": true,
+  "count": 3,
+  "data": [
+    {
+      "_id": "507f1f77bcf86cd799439012",
+      "propertyName": "my_wheat_property",
+      "currentCrop": "wheat",
+      "area": { "value": 1.3, "unit": "hectares" },
+      "soilType": "Alluvial",
+      "isVerified": false
+    }
+  ]
+}
+```
 
 ---
 
-#### `GET /reports/{filename}`
-Download generated PDF report.
+#### `GET /api/property/:id`
+Get single property by ID.
 
 ---
 
-#### `GET /api/dashboard-stats`
-Get overall dashboard statistics.
+#### `PUT /api/property/:id`
+Update property (blocked if verified).
 
 ---
 
-## 🧮 NDVI Calculation
+#### `DELETE /api/property/:id`
+Delete property (blocked if verified).
 
-### Formula
+---
+
+### Weather Endpoints
+
+#### `GET /api/weather/current`
+Get current weather for coordinates.
+
+**Query Params:**
+- `latitude`: number
+- `longitude`: number
+
+**Response:**
+```json
+{
+  "coord": { "lon": 78.97, "lat": 20.58 },
+  "weather": [{ "main": "Clear", "description": "clear sky" }],
+  "main": {
+    "temp": 28.5,
+    "feels_like": 30.2,
+    "humidity": 65,
+    "pressure": 1012
+  },
+  "wind": { "speed": 3.5 }
+}
 ```
-NDVI = (NIR - RED) / (NIR + RED)
+
+---
+
+### Alert Endpoints
+
+#### `POST /api/alerts/predict`
+Trigger ML prediction for property.
+
+**Request Body:**
+```json
+{
+  "propertyId": "507f1f77bcf86cd799439012"
+}
 ```
 
-Where:
-- **NIR**: Near-Infrared band (Band 8 in Sentinel-2)
-- **RED**: Red band (Band 4 in Sentinel-2)
-
-### Interpretation
-| NDVI Range | Interpretation |
-|------------|----------------|
-| 0.6 - 1.0  | Healthy, dense vegetation |
-| 0.3 - 0.6  | Moderate vegetation |
-| 0.1 - 0.3  | Sparse vegetation |
-| -0.1 - 0.1 | Bare soil, water |
-| < -0.1     | Non-vegetated surfaces |
-
-### Damage Detection
+**Response:**
+```json
+{
+  "success": true,
+  "propertyId": "507f1f77bcf86cd799439012",
+  "riskAssessment": {
+    "waterloggingRisk": 2.1,
+    "droughtStress": 1.5,
+    "heatStress": 3.2,
+    "coldStress": 0.8,
+    "diseaseRisk": 2.7,
+    "windDamage": 1.3,
+    "overallRisk": 4.5
+  },
+  "alertLevel": "moderate"
+}
 ```
-NDVI_Change = Current_NDVI - Baseline_NDVI
 
-If NDVI_Change < -0.2:  # Damaged
-    pixel = DAMAGED
-    
-If NDVI_Change < -0.4:  # Severe damage
-    pixel = SEVERE_DAMAGE
+---
+
+### Document Endpoints
+
+#### `POST /api/documents/upload`
+Upload a document to GridFS.
+
+**Request:** multipart/form-data
+- `document`: file
+- `propertyId`: string (optional)
+
+**Response:**
+```json
+{
+  "success": true,
+  "fileId": "507f191e810c19729de860ea",
+  "filename": "property_deed.pdf"
+}
 ```
+
+---
+
+#### `GET /api/documents`
+Get all documents for logged-in farmer.
+
+---
+
+#### `GET /api/documents/file/:id`
+Download document by file ID.
+
+---
+
+### Insurance Endpoints
+
+#### `POST /api/insurance`
+Create insurance policy.
+
+**Request Body:**
+```json
+{
+  "policyNumber": "POL-2025-001",
+  "insuranceProvider": "National Insurance Co.",
+  "premiumAmount": 5000,
+  "coverageAmount": 50000,
+  "startDate": "2025-01-01",
+  "endDate": "2025-12-31",
+  "propertyId": "507f1f77bcf86cd799439012"
+}
+```
+
+---
+
+#### `GET /api/insurance`
+Get all insurance policies for farmer.
+
+---
+
+## 🧮 ML Crop Prediction Model
+
+### Risk Factors Analyzed
+
+The system uses weather data to calculate 6 risk scores (0-10 scale):
+
+#### 1. **Waterlogging Risk**
+```javascript
+score = (rainfall / 50) + (humidity / 20)
+```
+- High rainfall + high humidity = flooding risk
+- Critical for rice, sugarcane
+
+#### 2. **Drought Stress**
+```javascript
+score = Math.max(0, (30 - temp) / 5) + (rainfall < 10 ? 5 : 0)
+```
+- Low temperature + minimal rain = drought
+- Affects wheat, cotton
+
+#### 3. **Heat Stress**
+```javascript
+score = Math.max(0, (temp - 35) / 2)
+```
+- Extreme temperatures (>35°C) damage crops
+- Critical during flowering stage
+
+#### 4. **Cold/Frost Damage**
+```javascript
+score = Math.max(0, (10 - temp) / 2)
+```
+- Low temperatures (<10°C) cause frost
+- Harmful to tropical crops
+
+#### 5. **Disease Risk**
+```javascript
+score = (humidity / 15) + (rainfall / 30)
+```
+- High humidity + rain = fungal diseases
+- Requires preventive spraying
+
+#### 6. **Wind Damage**
+```javascript
+score = Math.max(0, (windSpeed - 20) / 5)
+```
+- High wind speeds (>20 km/h) break stems
+- Lodging in wheat/rice
+
+### Overall Risk Score
+```javascript
+overallRisk = average of all 6 factors
+```
+
+### Alert Levels
+| Score | Level | Action |
+|-------|-------|--------|
+| 0-3   | Low   | Normal monitoring |
+| 3-6   | Moderate | Watch conditions |
+| 6-8   | High  | Take preventive action |
+| 8-10  | Severe | Emergency response |
+
+### Automated Monitoring
+- Cron job runs every 6 hours
+- Checks all properties in database
+- Fetches latest weather data
+- Recalculates risk scores
+- Sends alerts for high-risk properties
 
 ---
 
 ## 🔧 Configuration
 
-### Sentinel Hub Setup
+### OpenWeatherMap API Setup
 
-1. Create account at [Sentinel Hub](https://www.sentinel-hub.com/)
-2. Create OAuth client in dashboard
-3. Copy Client ID and Client Secret to `.env`
+1. Create free account at [OpenWeatherMap](https://openweathermap.org/)
+2. Go to API Keys section
+3. Generate new API key
+4. Add to `.env` file:
+   ```env
+   WEATHER_API_KEY=your_api_key_here
+   ```
 
 ### MongoDB Setup
 
 **Option 1: MongoDB Atlas (Recommended)**
 1. Create free cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Whitelist your IP address
-3. Create database user
-4. Copy connection string to `.env`
+2. Create database user with password
+3. Whitelist IP address (0.0.0.0/0 for development)
+4. Get connection string
+5. Add to `.env`:
+   ```env
+   MONGODB_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/farmview_ai?retryWrites=true&w=majority
+   ```
 
 **Option 2: Local MongoDB**
 ```bash
@@ -291,93 +537,119 @@ sudo apt-get install mongodb
 # Start service
 sudo systemctl start mongodb
 
-# Use local connection string
+# Use local connection
 MONGODB_URI=mongodb://localhost:27017/farmview_ai
+```
+
+### JWT Secret
+
+Generate a secure random string:
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Add to `.env`:
+```env
+JWT_SECRET=your_generated_secret_here
 ```
 
 ---
 
 ## 📊 Sample Output
 
-### Damage Heatmap
-![Damage Heatmap Example](https://via.placeholder.com/800x600/e74c3c/ffffff?text=Damage+Heatmap)
+### Property Dashboard
+![Property List](https://via.placeholder.com/800x400/2ecc71/ffffff?text=Property+Dashboard+-+List+View)
 
-### PDF Report Structure
-```
-1. Executive Summary
-   - Total Area: 2.73 ha
-   - Damage: 74.3%
-   - Risk Score: 8.5/10
-   
-2. Damage Assessment Visualization
-   - Color-coded heatmap
-   - NDVI comparison chart
-   
-3. Detailed Analysis
-   - Mean NDVI change
-   - Pixel statistics
-   - Area breakdown
-   
-4. Recommendations
-   - Action items based on severity
+### Interactive Map
+![Leaflet Map](https://via.placeholder.com/800x500/3498db/ffffff?text=Interactive+Map+with+Satellite+View)
+
+### Weather & Risk Assessment
+```json
+{
+  "propertyName": "my_wheat_property",
+  "currentWeather": {
+    "temp": 28.5,
+    "humidity": 65,
+    "rainfall": 5.2,
+    "windSpeed": 12
+  },
+  "riskAssessment": {
+    "waterloggingRisk": 2.1,
+    "droughtStress": 1.5,
+    "heatStress": 3.2,
+    "coldStress": 0.8,
+    "diseaseRisk": 2.7,
+    "windDamage": 1.3,
+    "overallRisk": 4.5
+  },
+  "alertLevel": "moderate",
+  "recommendations": [
+    "Monitor for disease symptoms",
+    "Ensure adequate irrigation",
+    "Watch weather forecast"
+  ]
+}
 ```
 
 ---
 
 ## 🏦 Insurance Integration
 
-### Webhook Configuration
+### Policy Management Features
 
-Set up automatic claim submission:
+- Create insurance policies linked to properties
+- Track premium amounts and coverage
+- Store policy documents
+- Manage policy start/end dates
+- View all active policies in dashboard
 
-```python
-# .env
-INSURANCE_WEBHOOK_URL=https://insurance-api.example.com/webhook
-INSURANCE_API_KEY=your_api_key_here
-```
+### Future Enhancements
 
-### Payload Format
-```json
-{
-  "farmer_id": "FARM001",
-  "analysis_id": "507f1f77bcf86cd799439012",
-  "damage_assessment": {
-    "damage_percent": 74.3,
-    "risk_score": 8.5
-  },
-  "claim_estimate": 371500,
-  "report_url": "/reports/report_FARM001_1698321000.pdf",
-  "timestamp": "2025-10-26T10:30:00Z"
-}
-```
+- Automatic claim filing based on risk scores
+- Integration with insurance company APIs
+- Premium calculation based on crop type and risk
+- Policy renewal reminders
+- Claim status tracking
 
 ---
 
 ## 🧪 Testing
 
-### Run API Tests
+### Backend API Tests
 ```bash
-# Install pytest
-pip install pytest pytest-asyncio httpx
+# Test health endpoint
+curl http://localhost:5000/
 
-# Run tests
-pytest tests/
-```
-
-### Manual Testing
-```bash
-# Health check
-curl http://localhost:8000/
-
-# Test field registration
-curl -X POST http://localhost:8000/api/register-field \
+# Test signup
+curl -X POST http://localhost:5000/api/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
-    "farmer_id": "TEST001",
-    "crop": "Rice",
-    "coordinates": [[81.6542, 21.2234], [81.6555, 21.2241], [81.6571, 21.2237], [81.6560, 21.2229]]
+    "name": "Test Farmer",
+    "email": "test@example.com",
+    "phone": "9876543210",
+    "password": "test123"
   }'
+
+# Test login
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "test123"
+  }'
+
+# Test protected route (replace TOKEN)
+curl http://localhost:5000/api/property \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
+
+### Frontend Testing
+1. Open `http://localhost:5173`
+2. Sign up with test credentials
+3. Create a property with sample data
+4. Upload test documents
+5. Check weather and trigger ML prediction
+6. Create insurance policy
 
 ---
 
@@ -385,42 +657,76 @@ curl -X POST http://localhost:8000/api/register-field \
 
 ```
 SSPU-HACK/
-├── main.py                 # FastAPI application
-├── config.py               # Configuration settings
-├── database.py             # MongoDB models
-├── ndvi_processor.py       # NDVI calculation engine
-├── sentinel_api.py         # Sentinel Hub integration
-├── visualization.py        # Charts and PDF generation
-├── fintech_integration.py  # Insurance API integration
-├── auth.py                 # JWT authentication
-├── requirements.txt        # Python dependencies
-├── .env.example           # Environment template
-├── README.md              # This file
-├── static/
-│   └── index.html         # Frontend dashboard
-├── temp/                  # Temporary files
-├── reports/               # Generated PDF reports
-└── tests/                 # Unit tests
+├── farmview-frontend/
+│   ├── client/                    # React Frontend (Vite)
+│   │   ├── src/
+│   │   │   ├── components/       # Reusable UI components
+│   │   │   ├── pages/            # Page components
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   ├── Property.jsx  # Map + property creation
+│   │   │   │   ├── Weather.jsx   # Weather display
+│   │   │   │   ├── Insurance.jsx
+│   │   │   │   └── Documents.jsx
+│   │   │   ├── utils/
+│   │   │   │   └── api.js        # Axios instance with JWT
+│   │   │   ├── App.jsx
+│   │   │   └── main.jsx
+│   │   ├── package.json
+│   │   └── vite.config.js
+│   │
+│   └── server/                    # Express.js Backend
+│       ├── models/               # MongoDB schemas
+│       │   ├── Farmer.model.js
+│       │   ├── Property.model.js
+│       │   ├── Insurance.model.js
+│       │   └── Alert.model.js
+│       ├── routes/               # API routes
+│       │   ├── auth.routes.js
+│       │   ├── property.routes.js
+│       │   ├── weather.routes.js
+│       │   ├── document.routes.js
+│       │   ├── insurance.routes.js
+│       │   └── alert.routes.js
+│       ├── middleware/
+│       │   └── auth.middleware.js  # JWT verification
+│       ├── services/
+│       │   ├── cropPrediction.js   # ML risk calculation
+│       │   └── weatherAlertService.js  # Cron job
+│       ├── config/
+│       │   └── db.js              # MongoDB connection
+│       ├── .env                   # Environment variables
+│       ├── server.js              # Entry point
+│       └── package.json
+│
+├── README.md                      # This file
+└── .gitignore
 ```
 
 ---
 
 ## 🔐 Security
 
-- **JWT Authentication**: Secure API access
-- **Password Hashing**: Bcrypt for user passwords
-- **CORS Protection**: Configurable origins
-- **Environment Variables**: Sensitive data in `.env`
-- **Input Validation**: Pydantic models
+- **JWT Authentication**: Secure token-based auth with expiry
+- **Password Hashing**: Bcrypt with salt rounds
+- **Protected Routes**: Middleware verification on all farmer endpoints
+- **CORS Configuration**: Restricted origins in production
+- **Environment Variables**: Sensitive data in `.env` (not committed)
+- **Input Validation**: Mongoose schema validation
+- **File Upload Limits**: 10MB max file size for documents
+- **GridFS Storage**: Secure file storage in MongoDB
 
 ---
 
 ## 📈 Performance
 
-- **Analysis Time**: 30-60 seconds per field
-- **Image Resolution**: 512x512 pixels (configurable)
-- **Database**: MongoDB with async operations
-- **Concurrent Requests**: Supported via FastAPI
+- **Response Time**: < 500ms for most API calls
+- **Weather Fetch**: 1-2 seconds (depends on OpenWeatherMap API)
+- **ML Prediction**: < 100ms (in-memory calculation)
+- **Document Upload**: Supports up to 10MB files
+- **Map Rendering**: Optimized Leaflet with tile caching
+- **Database**: MongoDB with indexes on farmerId and propertyId
+- **Concurrent Users**: Express.js async/await pattern
+- **Cron Jobs**: Non-blocking background tasks every 6 hours
 
 ---
 
@@ -428,23 +734,53 @@ SSPU-HACK/
 
 ### Common Issues
 
-**1. Sentinel Hub API Error**
+**1. Backend won't start**
 ```
-Error: Unable to fetch satellite images
+Error: Cannot find module 'express'
 ```
-**Solution**: Check API credentials and ensure account has sufficient quota
+**Solution**: Run `npm install` in server directory
 
-**2. MongoDB Connection Error**
+**2. Frontend build error**
 ```
-Error: Failed to connect to MongoDB
+Error: Cannot find module 'leaflet'
 ```
-**Solution**: Verify MongoDB URI and whitelist IP address (Atlas)
+**Solution**: Run `npm install` in client directory
 
-**3. No Satellite Data Available**
+**3. MongoDB Connection Error**
 ```
-Error: No images found for date range
+Error: connect ECONNREFUSED
 ```
-**Solution**: Adjust date range or check if area has cloud coverage < 30%
+**Solution**: 
+- Check MongoDB URI in `.env`
+- Verify IP whitelist in MongoDB Atlas (add 0.0.0.0/0 for testing)
+- Ensure MongoDB service is running (if local)
+
+**4. JWT Authentication Failed**
+```
+Error: 401 Unauthorized
+```
+**Solution**: 
+- Check if token is in localStorage
+- Verify JWT_SECRET in `.env`
+- Re-login to get fresh token
+
+**5. Weather API Error**
+```
+Error: 401 Unauthorized from OpenWeatherMap
+```
+**Solution**: Check WEATHER_API_KEY in `.env` and verify API key is active
+
+**6. Map not loading**
+```
+Leaflet error: Map container not found
+```
+**Solution**: Check if DOM element with id exists before initializing map
+
+**7. File Upload Error**
+```
+Error: GridFS bucket not initialized
+```
+**Solution**: Restart backend server to reinitialize GridFS connection
 
 ---
 
@@ -455,6 +791,14 @@ Error: No images found for date range
 3. Commit changes (`git commit -m 'Add AmazingFeature'`)
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open Pull Request
+
+### Development Guidelines
+
+- Follow existing code structure
+- Add comments for complex logic
+- Test all API endpoints before committing
+- Update README if adding new features
+- Keep dependencies up to date
 
 ---
 
@@ -468,22 +812,46 @@ This project is licensed under the MIT License.
 
 Developed for **SSPU HACKATHON 2025**
 
+**Tech Stack:**
+- Frontend: React 18.2 + Vite 5.4
+- Backend: Node.js 20.19 + Express 4.21
+- Database: MongoDB Atlas
+- Maps: Leaflet 1.9.4 + Leaflet Draw 1.0.4
+- Authentication: JWT + Bcrypt
+- Weather: OpenWeatherMap API
+
 ---
 
 ## 🙏 Acknowledgments
 
-- **Sentinel Hub** for satellite imagery API
-- **ESA Copernicus** for Sentinel-2 data
+- **OpenWeatherMap** for weather data API
 - **Leaflet.js** for interactive mapping
-- **FastAPI** for modern Python web framework
+- **MongoDB** for flexible document storage
+- **Nominatim** for geocoding services
+- **Esri ArcGIS** for satellite imagery tiles
 
 ---
 
 ## 📞 Support
 
 For issues and questions:
-- Create an issue on GitHub
-- Email: support@farmview-ai.example.com
+- Create an issue on [GitHub](https://github.com/mebishnusahu0595/SSPU-HACK/issues)
+- Email: mebishnusahu@example.com
+
+---
+
+## 🚀 Future Enhancements
+
+- [ ] Satellite imagery integration (Sentinel-2 NDVI analysis)
+- [ ] SMS/Email alert notifications
+- [ ] Mobile app (React Native)
+- [ ] Multi-language support (Hindi, Marathi, etc.)
+- [ ] Soil testing recommendations
+- [ ] Crop yield prediction
+- [ ] Market price integration
+- [ ] Government scheme recommendations
+- [ ] Community forum for farmers
+- [ ] Voice-based input (for low-literacy users)
 
 ---
 
