@@ -101,6 +101,40 @@ const propertySchema = new mongoose.Schema({
   },
   verificationDate: Date,
   
+  // Satellite Imagery & NDVI Data
+  satelliteData: {
+    lastAnalysisDate: Date,
+    baselineNDVI: {
+      mean: Number,
+      min: Number,
+      max: Number,
+      healthyPercent: Number,
+      moderatePercent: Number,
+      stressedPercent: Number,
+      damagedPercent: Number,
+      captureDate: Date,
+      heatmapUrl: String
+    },
+    currentNDVI: {
+      mean: Number,
+      min: Number,
+      max: Number,
+      healthyPercent: Number,
+      moderatePercent: Number,
+      stressedPercent: Number,
+      damagedPercent: Number,
+      captureDate: Date,
+      heatmapUrl: String
+    },
+    damageAssessment: {
+      meanChange: Number,
+      damagePercent: Number,
+      severeDamagePercent: Number,
+      riskScore: Number,
+      assessmentDate: Date
+    }
+  },
+  
   createdAt: {
     type: Date,
     default: Date.now

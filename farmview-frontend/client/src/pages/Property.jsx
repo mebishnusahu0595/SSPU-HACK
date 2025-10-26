@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet-draw';
 import api from '../utils/api';
+import SatelliteNDVI from '../components/SatelliteNDVI';
 
 export default function Property() {
   const { t } = useTranslation();
@@ -25,6 +26,7 @@ export default function Property() {
   const [submitting, setSubmitting] = useState(false);
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null); // For satellite analysis
 
   // Fetch all properties for the farmer
   const fetchProperties = async () => {
@@ -284,11 +286,25 @@ export default function Property() {
                   {prop.documents && prop.documents.length > 0 && (
                     <p className="text-xs text-gray-500 mt-2">📄 {prop.documents.length} document(s)</p>
                   )}
+                  <button
+                    onClick={() => setSelectedProperty(prop)}
+                    className="btn btn-primary w-full mt-3 text-sm"
+                  >
+                    🛰️ View Satellite Analysis
+                  </button>
                 </div>
               ))}
             </div>
           )}
         </div>
+
+        {/* Satellite Analysis Section */}
+        {selectedProperty && (
+          <SatelliteNDVI
+            propertyId={selectedProperty._id}
+            propertyName={selectedProperty.propertyName}
+          />
+        )}
 
         {/* Create Property Section */}
         <h2 className="text-2xl font-bold mb-4">Add New Property</h2>
