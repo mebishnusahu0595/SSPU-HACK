@@ -836,7 +836,7 @@ Developed for **SSPU HACKATHON 2025**
 
 For issues and questions:
 - Create an issue on [GitHub](https://github.com/mebishnusahu0595/SSPU-HACK/issues)
-- Email: mebishnusahu@example.com
+- Email: mebishnusahu0595@gmail.com
 
 ---
 
