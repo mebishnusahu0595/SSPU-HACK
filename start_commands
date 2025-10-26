@@ -1,0 +1,4 @@
+cd /home/bishnups/Documents/SSPU-HACK/farmview-frontend/server && npm start
+
+
+cd /home/bishnups/Documents/SSPU-HACK/farmview-frontend/client && npm run dev
