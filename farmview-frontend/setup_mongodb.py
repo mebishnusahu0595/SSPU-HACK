@@ -10,10 +10,8 @@ from datetime import datetime
 import sys
 from urllib.parse import quote_plus
 
-# MongoDB Connection - URL encode special characters
-username = quote_plus("mebishnusahu")
-password = quote_plus("Bishnu05@")
-MONGODB_URI = f"mongodb+srv://{username}:{password}@cluster0.n0nc4hi.mongodb.net/?appName=Cluster0"
+# MongoDB Connection - Local MongoDB
+MONGODB_URI = "mongodb://localhost:27017/"
 DATABASE_NAME = "farmview_ai"
 
 def connect_to_mongodb():

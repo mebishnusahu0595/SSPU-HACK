@@ -33,12 +33,13 @@ app.use('/api/', limiter);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+  serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+  socketTimeoutMS: 45000, // 45 seconds socket timeout
 })
 .then(() => console.log('✅ MongoDB Atlas Connected Successfully'))
 .catch(err => {
   console.error('❌ MongoDB Connection Error:', err.message);
+  console.error('Full error:', err);
   process.exit(1);
 });
 
@@ -52,6 +53,7 @@ const digilockerRoutes = require('./routes/digilocker.routes');
 const propertyRoutes = require('./routes/property.routes');
 const alertsRoutes = require('./routes/alerts.routes');
 const satelliteRoutes = require('./routes/satellite.routes');
+const claimRoutes = require('./routes/claim.routes');
 
 // Import Services
 const weatherAlertService = require('./services/weatherAlertService');
@@ -62,6 +64,7 @@ app.use('/api/farmer', farmerRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/insurance', insuranceRoutes);
+app.use('/api/claims', claimRoutes);
 app.use('/api/digilocker', digilockerRoutes);
 app.use('/api/property', propertyRoutes);
 app.use('/api/alerts', alertsRoutes);
